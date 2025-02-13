@@ -1,5 +1,6 @@
 const { SHOWINDEXES } = require("sequelize/lib/query-types");
 const { Task } = require("../models");
+const { where } = require("sequelize");
 
 class Taskcontrollers {
   async store(req, res) {
@@ -39,18 +40,15 @@ class Taskcontrollers {
     try {
       const { id } = req.params;
       const { title, description, status, priority } = req.body;
+      const task = await Task.findByPk(id);
 
-      await Task.update(
-        { title, description, status, priority },
-        {
-          where: {
-            id: id,
-          },
-        }
-      );
-      return res
-        .status(200)
-        .json({ message: "Tarefa atualizada com sucesso!" });
+      if (!task) {
+
+        return res.status(404).json({ message: "Tarefa não encontrada" });
+      }
+
+      await task.update({ title, description, status, priority });
+      return res.status(200).json({ message: "Tarefa atualizada com sucesso!" });
     } catch (error) {
       return res.status(404).json({ message: "Falha ao atualizar tarefa" });
     }
@@ -59,12 +57,13 @@ class Taskcontrollers {
   async destroy(req, res) {
     try {
       const { id } = req.params;
+      const task = await Task.findByPk(id);
 
-      await Task.destroy({
-        where: {
-          id: id,
-        },
-      });
+      if (!task) {
+        return res.status(404).json({ message: "Tarefa não encontrada" });
+      }
+
+      await Task.destroy( {where : { id }});
       return res.status(200).json({ message: "Tarefa excluida com sucesso!" });
     } catch (error) {
       return res.status(404).json({ message: "Falha ao excluir tarefa" });

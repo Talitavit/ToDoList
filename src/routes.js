@@ -8,10 +8,9 @@ routes.get("/health", (req, res) => {
  
 routes.post("/tasks", TaskController.store)
 routes.get("/tasks", TaskController.index); 
-routes.get("tasks/:id", TaskController.show);   
+routes.get("/tasks/:id", TaskController.show);   
 routes.put("/tasks/:id", TaskController.update);    
 routes.delete("/tasks/:id", TaskController.destroy);
-
 
 module.exports = routes;
 
