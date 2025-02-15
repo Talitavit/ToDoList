@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Tag extends Model {
     static associate(models) {
       Tag.belongsToMany(models.Task, {
-        through: "TagTask",
+        through: "TagTasks",
         as: "tasks",
         foreignKey: "TagId",
       });

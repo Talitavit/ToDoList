@@ -1,12 +1,12 @@
 "use strict";
-const { Model, ForeignKeyConstraintError } = require("sequelize");
-const TagController = require("../controllers/TagController");
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Task extends Model {
     
     static associate(models) {
       Task.belongsToMany(models.Tag, {
-        through: "TagTask",
+        through: "TagTasks",
         as: "tags",
         foreignKey: "TaskId",
       });

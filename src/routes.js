@@ -15,10 +15,10 @@ routes.put("/tasks/:id", TaskController.update);
 routes.delete("/tasks/:id", TaskController.destroy);
 
 routes.post("/tags", TagController.store)
-// routes.get("/tags", TagController.index); 
-// routes.get("/tags/:id", TagController.show);   
-// routes.put("/tags/:id", TagController.update);    
-// routes.delete("/tags/:id", TagController.destroy);
+routes.get("/tags", TagController.index); 
+routes.get("/tags/:id", TagController.show);   
+routes.put("/tags/:id", TagController.update);    
+routes.delete("/tags/:id", TagController.destroy);
 
 module.exports = routes;
 
