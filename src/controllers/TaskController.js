@@ -43,12 +43,13 @@ class Taskcontrollers {
       const task = await Task.findByPk(id);
 
       if (!task) {
-
         return res.status(404).json({ message: "Tarefa não encontrada" });
       }
 
       await task.update({ title, description, status, priority });
-      return res.status(200).json({ message: "Tarefa atualizada com sucesso!" });
+      return res
+        .status(200)
+        .json({ message: "Tarefa atualizada com sucesso!" });
     } catch (error) {
       return res.status(404).json({ message: "Falha ao atualizar tarefa" });
     }
@@ -63,7 +64,7 @@ class Taskcontrollers {
         return res.status(404).json({ message: "Tarefa não encontrada" });
       }
 
-      await Task.destroy( {where : { id }});
+      await Task.destroy({ where: { id } });
       return res.status(200).json({ message: "Tarefa excluida com sucesso!" });
     } catch (error) {
       return res.status(404).json({ message: "Falha ao excluir tarefa" });
