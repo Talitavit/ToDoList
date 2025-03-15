@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const TaskController = require("../controllers/TaskController"); // ✅ Caminho correto!
+const TaskController = require("../controllers/TaskController");
 
 const router = Router();
 

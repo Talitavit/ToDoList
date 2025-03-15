@@ -1,10 +1,12 @@
 const express = require("express");
-const taskRoutes = require("./tasks"); // Importa o arquivo tasks.js
-const tagRoutes = require("./tags"); // 🚨 IMPORTANTE: Faltava importar as tags
+const userRoutes = require("./routes/user");
+const taskRoutes = require("./tasks");
+const tagRoutes = require("./tags");
 
 const router = express.Router();
 
+router.use("/users", UserRoutes);
 router.use("/tasks", taskRoutes);
-router.use("/tags", tagRoutes); // ✅ Agora tags também estão incluídas
+router.use("/tags", tagRoutes);
 
 module.exports = router;

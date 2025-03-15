@@ -3,6 +3,8 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Tag extends Model {
     static associate(models) {
+      Tag.belongsTo(models.User, { foreignKey: "userId" });
+
       Tag.belongsToMany(models.Task, {
         through: "TagTasks",
         as: "tasks",
