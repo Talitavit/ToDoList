@@ -1,4 +1,6 @@
-const { User, Task } = require("../models");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { User } = require("../models");
 
 class Usercontrollers {
   async store(req, res) {
@@ -10,7 +12,14 @@ class Usercontrollers {
         return res.status(400).json({ message: "Usuário já cadastrado!" });
       }
 
-      const user = await User.create({ username, email, password });
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
+      const User = await User.create({
+        username,
+        email,
+        password: hashedPassword,
+      });
 
       const userWithoutPassword = { ...user.toJSON() };
       delete userWithoutPassword.password;

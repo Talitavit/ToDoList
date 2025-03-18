@@ -4,12 +4,19 @@ class TaskController {
   async store(req, res) {
     try {
       const { title, description, status, priority, tags } = req.body;
+      const userId = req.user.id;
 
-      const task = await Task.create({ title, description, status, priority });
+      const task = await Task.create({
+        title,
+        description,
+        status,
+        priority,
+        userId,
+      });
 
       if (tags && tags.length > 0) {
         const tagsToAssociate = await Tag.findAll({
-          where: { id: tags },
+          where: { id: tags, userId: req.user.id },
         });
 
         await task.setTags(tagsToAssociate);
@@ -21,7 +28,7 @@ class TaskController {
             model: Tag,
             as: "tags",
             attributes: ["id", "name", "color", "createdAt", "updatedAt"],
-            though: { attributes: [] },
+            through: { attributes: [] },
           },
         ],
       });
@@ -41,6 +48,7 @@ class TaskController {
 
       return res.status(200).json(tasks);
     } catch (error) {
+      console.error(error);
       console.error("Erro ao listar tarefas:", error);
       return res.status(400).json({ message: "Falha ao listar tarefas!" });
     }

@@ -4,13 +4,14 @@ class Tagcontroller {
   async store(req, res) {
     try {
       const { name, color } = req.body;
+      const userId = req.user.id;
 
-      const existingTag = await Tag.findOne({ where: { name } });
+      const existingTag = await Tag.findOne({ where: { name, userId } });
       if (existingTag) {
         return res.status(400).json({ message: "Tag já existe!" });
       }
 
-      const tag = await Tag.create({ name, color });
+      const tag = await Tag.create({ name, color, userId });
       return res.status(201).json(tag);
     } catch (error) {
       console.log(error);
