@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Task } = require("../models");
 
 class Usercontrollers {
   async store(req, res) {
@@ -90,10 +90,13 @@ class Usercontrollers {
         return res.status(404).json({ message: "Usuário não encontrado!" });
       }
 
+      const bcrypt = require("bcryptjs");
+
       if (password) {
-        user.password = password;
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(password, salt);
       }
-      await user.update({ username, email });
+      await user.update({ username, email, password: user.password });
 
       const userWithoutPassword = { ...user.toJSON() };
       delete userWithoutPassword.password;

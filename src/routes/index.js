@@ -1,11 +1,11 @@
 const express = require("express");
-const userRoutes = require("./routes/user");
-const taskRoutes = require("./tasks");
-const tagRoutes = require("./tags");
-
 const router = express.Router();
 
-router.use("/users", UserRoutes);
+const userRoutes = require("./user.js");
+const taskRoutes = require("./tasks.js");
+const tagRoutes = require("./tags.js");
+
+router.use("/users", userRoutes);
 router.use("/tasks", taskRoutes);
 router.use("/tags", tagRoutes);
 
