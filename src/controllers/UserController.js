@@ -15,13 +15,13 @@ class Usercontrollers {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const User = await User.create({
+      const newUser = await User.create({
         username,
         email,
         password: hashedPassword,
       });
 
-      const userWithoutPassword = { ...user.toJSON() };
+      const userWithoutPassword = { ...newUser.toJSON() };
       delete userWithoutPassword.password;
 
       return res.status(201).json(userWithoutPassword);
