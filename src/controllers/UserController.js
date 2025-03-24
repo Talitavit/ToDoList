@@ -1,33 +1,27 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
+const hashPassword = require("../utils/hashPassword");
+const UserService = require("../services/userService");
 
 class Usercontrollers {
   async store(req, res) {
     try {
       const { username, email, password } = req.body;
-
-      const userExists = await User.findOne({ where: { email } });
-      if (userExists) {
-        return res.status(400).json({ message: "Usuário já cadastrado!" });
-      }
-
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-
-      const newUser = await User.create({
+      const result = await UserService.create({
         username,
         email,
-        password: hashedPassword,
+        password,
       });
 
-      const userWithoutPassword = { ...newUser.toJSON() };
-      delete userWithoutPassword.password;
+      if (result.is_error) {
+        return res.status(400).json(result);
+      }
 
-      return res.status(201).json(userWithoutPassword);
+      return res.status(201).json(result);
     } catch (error) {
+      const message = "Falha ao cadastrar usuário!";
       console.error("Erro ao cadastrar usuário:", error);
-      return res.status(400).json({ message: "Falha ao cadastrar usuário!" });
+      return res.status(400).json({ message, is_error: true });
     }
   }
 
@@ -40,7 +34,9 @@ class Usercontrollers {
         return res.status(401).json({ message: "E-mail ou senha inválidos!" });
       }
 
-      const validPassword = await bcrypt.compare(password, user.password);
+      const hashedPassword = hashPassword(password);
+
+      const validPassword = user.password === hashedPassword;
       if (!validPassword) {
         return res.status(401).json({ message: "E-mail ou senha inválidos!" });
       }
@@ -49,8 +45,7 @@ class Usercontrollers {
         expiresIn: "1h",
       });
 
-      const userWithoutPassword = { ...user.toJSON() };
-      delete userWithoutPassword.password;
+      const userWithoutPassword = { ...user.toJSON(), password: undefined };
 
       return res.status(200).json({ user: userWithoutPassword, token });
     } catch (error) {
@@ -98,8 +93,6 @@ class Usercontrollers {
       if (!user) {
         return res.status(404).json({ message: "Usuário não encontrado!" });
       }
-
-      const bcrypt = require("bcryptjs");
 
       if (password) {
         const salt = await bcrypt.genSalt(10);
