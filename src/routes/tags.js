@@ -4,10 +4,12 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 const router = Router();
 
-router.post("/", authMiddleware, TagController.store);
-router.get("/", authMiddleware, TagController.index);
-router.get("/:id", authMiddleware, TagController.show);
-router.put("/:id", authMiddleware, TagController.update);
-router.delete("/:id", authMiddleware, TagController.destroy);
+router.use(authMiddleware);
+
+router.post("/create", TagController.store);
+router.get("/list", TagController.index);
+router.get("/:id", TagController.show);
+router.put("/:id", TagController.update);
+router.delete("/:id", TagController.destroy);
 
 module.exports = router;
