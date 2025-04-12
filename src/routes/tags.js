@@ -8,8 +8,8 @@ router.use(authMiddleware);
 
 router.post("/create", TagController.store);
 router.get("/list", TagController.index);
-router.get("/:id", TagController.show);
-router.put("/:id", TagController.update);
-router.delete("/:id", TagController.destroy);
+router.get("/show/:id", TagController.show);
+router.put("/update/:id", TagController.update);
+router.delete("/destroy/:id", TagController.destroy);
 
 module.exports = router;
