@@ -6,11 +6,10 @@ class TaskController {
       const { title, status } = req.body;
       const userId = req.user.id;
 
-      // Validação simplificada em um único if
       if (!title?.trim() || !status?.trim()) {
         return res.status(400).json({
           error: true,
-          message: "Todos os campos são obrigatórios",
+          message: "Todos os campos são obrigatórios!",
         });
       }
 
