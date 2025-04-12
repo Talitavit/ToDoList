@@ -108,5 +108,4 @@ Permite criar usuários, tasks e tags, além de associar tags às tasks para mel
 
 MIT License.
 
-**Desenvolvido por [Talita Vitória]**
-**Bootcamp TASCOM**
+**Desenvolvido por Talita Vitória**
