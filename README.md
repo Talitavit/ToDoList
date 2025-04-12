@@ -46,7 +46,6 @@ Permite criar usuários, tasks e tags, além de associar tags às tasks para mel
      DB_PASSWORD=sua_senha_postgres
      DB_DATABASE=nome_do_banco_de_dados
      DB_HOST=localhost
-     DB_PORT=5432
      DB_DIALECT=postgres
 
      JWT_SECRET=sua_chave_secreta_jwt
