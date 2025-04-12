@@ -35,8 +35,9 @@ class TaskController {
 
       return res.status(201).json(taskWithTags);
     } catch (error) {
+      const message = "Falha ao criar tarefa!";
       console.error("Erro ao criar tarefa:", error);
-      return res.status(400).json({ message: "Falha ao criar tarefa!" });
+      return res.status(400).json({ message, is_error: true });
     }
   }
 
@@ -48,9 +49,9 @@ class TaskController {
 
       return res.status(200).json(tasks);
     } catch (error) {
-      console.error(error);
+      const message = "Falha ao listar tarefas!";
       console.error("Erro ao listar tarefas:", error);
-      return res.status(400).json({ message: "Falha ao listar tarefas!" });
+      return res.status(400).json({ message, is_error: true });
     }
   }
 
@@ -62,13 +63,17 @@ class TaskController {
       });
 
       if (!task) {
-        return res.status(404).json({ message: "Tarefa não encontrada!" });
+        return res.status(404).json({
+          message: "Tarefa não encontrada!",
+          is_error: true,
+        });
       }
 
       return res.status(200).json(task);
     } catch (error) {
+      const message = "Falha ao buscar tarefa!";
       console.error("Erro ao buscar tarefa:", error);
-      return res.status(400).json({ message: "Falha ao encontrar tarefa!" });
+      return res.status(400).json({ message, is_error: true });
     }
   }
 
@@ -79,7 +84,10 @@ class TaskController {
       const task = await Task.findByPk(id);
 
       if (!task) {
-        return res.status(404).json({ message: "Tarefa não encontrada!" });
+        return res.status(404).json({
+          message: "Tarefa não encontrada!",
+          is_error: true,
+        });
       }
 
       await task.update({ title, description, status, priority });
@@ -98,8 +106,9 @@ class TaskController {
 
       return res.status(200).json(updatedTask);
     } catch (error) {
+      const message = "Falha ao atualizar tarefa!";
       console.error("Erro ao atualizar tarefa:", error);
-      return res.status(400).json({ message: "Falha ao atualizar tarefa" });
+      return res.status(400).json({ message, is_error: true });
     }
   }
 
@@ -109,14 +118,18 @@ class TaskController {
       const task = await Task.findByPk(id);
 
       if (!task) {
-        return res.status(404).json({ message: "Tarefa não encontrada!" });
+        return res.status(404).json({
+          message: "Tarefa não encontrada!",
+          is_error: true,
+        });
       }
 
       await task.destroy();
       return res.status(200).json({ message: "Tarefa excluída com sucesso!" });
     } catch (error) {
+      const message = "Falha ao excluir tarefa!";
       console.error("Erro ao excluir tarefa:", error);
-      return res.status(400).json({ message: "Falha ao excluir tarefa!" });
+      return res.status(400).json({ message, is_error: true });
     }
   }
 }
