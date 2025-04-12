@@ -3,8 +3,16 @@ const { Task, Tag } = require("../models");
 class TaskController {
   async store(req, res) {
     try {
-      const { title, description, status, priority, tags } = req.body;
+      const { title, status } = req.body;
       const userId = req.user.id;
+
+      // Validação simplificada em um único if
+      if (!title?.trim() || !status?.trim()) {
+        return res.status(400).json({
+          error: true,
+          message: "Todos os campos são obrigatórios",
+        });
+      }
 
       const task = await Task.create({
         title,

@@ -6,6 +6,13 @@ class Tagcontroller {
       const { name, color } = req.body;
       const userId = req.user.id;
 
+      if (!name?.trim()) {
+        return res.status(400).json({
+          error: true,
+          message: "Todos os campos são obrigatórios!",
+        });
+      }
+
       const existingTag = await Tag.findOne({ where: { name, userId } });
       if (existingTag) {
         return res.status(400).json({

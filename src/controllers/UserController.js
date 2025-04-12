@@ -7,11 +7,15 @@ class Usercontrollers {
   async store(req, res) {
     try {
       const { username, email, password } = req.body;
-      const result = await UserService.create({
-        username,
-        email,
-        password,
-      });
+
+      if (!username?.trim() || !email?.trim() || !password?.trim()) {
+        return res.status(400).json({
+          error: true,
+          message: "Todos os campos são obrigatórios!",
+        });
+      }
+
+      const result = await UserService.create({ username, email, password });
 
       if (result.is_error) {
         return res.status(400).json(result);
@@ -19,7 +23,6 @@ class Usercontrollers {
 
       return res.status(201).json(result);
     } catch (error) {
-      const message = "Falha ao cadastrar usuário!";
       console.error("Erro ao cadastrar usuário:", error);
       return res.status(400).json({ message, is_error: true });
     }
@@ -42,7 +45,7 @@ class Usercontrollers {
       }
 
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: "7d",
       });
 
       const userWithoutPassword = { ...user.toJSON(), password: undefined };
